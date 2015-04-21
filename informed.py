@@ -133,7 +133,7 @@ nx.draw_networkx_nodes(H, pos=layout,nodelist=given, node_color='g')
 nx.draw_networkx_edges(H, pos=layout,edgelist=H.edges())
 nx.draw_networkx_edges(H, pos=layout,edgelist=H.edges(given), edge_color='g')
 
-plt.savefig('greedy.png')
+plt.savefig('images/greedy.png')
 plt.show()
 
 

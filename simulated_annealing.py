@@ -114,13 +114,37 @@ with open('data_files/348.edges.txt', 'r') as f:
 G.graph['GivenCard'] = 0
 
 start = time.clock()
-print(simulated_annealing(G, greedy_random_strat))
+sag_solution, sag_exposed = simulated_annealing(G, greedy_random_strat)
+print(sag_solution, sag_exposed)
 end = time.clock()
 print('Greedy Strat Annealing time: {:.5f} sec'.format(end - start))
 
 start = time.clock()
-print(simulated_annealing(G, random_strat))
+sar_solution, sar_exposed = simulated_annealing(G, random_strat)
+print(sar_solution, sar_exposed)
 end = time.clock()
 print('Random Strat Annealing time: {:.5f} sec'.format(end - start))
 
+exposed = []
+H = G.copy()
+for node in sag_solution:
+    neighbors = H.neighbors(node)
+    for neighbor in neighbors:
+        exposed.append(neighbor)
+        H.remove_node(neighbor)
+    H.remove_node(node)
+ 
+
+layout = nx.spring_layout(G, scale=5)
+
+# Draw Graph
+# Exposed Nodes = blue GivenCard = Green Rest = Red
+nx.draw_networkx_nodes(G, pos=layout,nodelist=G.nodes(), node_color='r', node_size=100)
+nx.draw_networkx_nodes(G, pos=layout,nodelist=exposed, node_color='b', node_size=200)
+nx.draw_networkx_nodes(G, pos=layout,nodelist=sag_solution, node_color='g')
+nx.draw_networkx_edges(G, pos=layout,edgelist=G.edges())
+nx.draw_networkx_edges(G, pos=layout,edgelist=G.edges(sag_solution), edge_color='g')
+
+plt.savefig('images/simulate_annealing.png')
+plt.show()
 
