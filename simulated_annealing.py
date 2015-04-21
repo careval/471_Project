@@ -80,15 +80,15 @@ def simulated_annealing(G, strat, solution=None):
     if not solution:
         solution, exposed = neighbor_solution(G.copy(), strat, [])
         
-    f.write('{0}\n'.format(exposed))
+    #f.write('{0}\n'.format(exposed))
 
     # TODO Play with temp/rate
     # Initial Temp
-    #temp = 10000
+    temp = 10000
 
     # Result with 100 Temp (Greedy Strat)
     # ['475', '397', '538', '455', '362', '198', '532', '424', '464', '508'] 194
-    temp = 100
+    #temp = 100
     # Cooling Rate
     cooling = .003
 
@@ -101,7 +101,7 @@ def simulated_annealing(G, strat, solution=None):
             solution = new_solution
             old_exposed = new_exposed
 
-        f.write('{0}\n'.format(new_exposed))
+        #f.write('{0}\n'.format(new_exposed))
 
         # Cooling the Temperature
         temp = temp * (1 - cooling)
@@ -118,7 +118,7 @@ with open('data_files/348.edges.txt', 'r') as f:
 G.graph['GivenCard'] = 0
 
 
-f = open('data_files/sa_iter.txt', 'w')
+#f = open('data_files/sa_iter.txt', 'w')
 
 start = time.clock()
 sag_solution, sag_exposed = simulated_annealing(G, greedy_random_strat)
@@ -126,11 +126,11 @@ print(sag_solution, sag_exposed)
 end = time.clock()
 print('Greedy Strat Annealing time: {:.5f} sec'.format(end - start))
 
-f.close()
+#f.close()
 
 start = time.clock()
-#sar_solution, sar_exposed = simulated_annealing(G, random_strat)
-#print(sar_solution, sar_exposed)
+sar_solution, sar_exposed = simulated_annealing(G, random_strat)
+print(sar_solution, sar_exposed)
 end = time.clock()
 print('Random Strat Annealing time: {:.5f} sec'.format(end - start))
 
@@ -154,6 +154,6 @@ nx.draw_networkx_nodes(G, pos=layout,nodelist=sag_solution, node_color='g')
 nx.draw_networkx_edges(G, pos=layout,edgelist=G.edges())
 nx.draw_networkx_edges(G, pos=layout,edgelist=G.edges(sag_solution), edge_color='g')
 
-plt.savefig('images/simulate_annealing1.png')
+plt.savefig('images/simulate_annealing.png')
 plt.show()
 
